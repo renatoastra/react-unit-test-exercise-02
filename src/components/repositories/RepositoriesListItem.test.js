@@ -1,16 +1,16 @@
-import { render, screen} from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import RepositoriesListItem from "./RepositoriesListItem"
 import { MemoryRouter } from "react-router"
 
 const renderComponent = () => {
 
-  const repository =  {
+  const repository = {
     full_name: 'facebook/react',
     language: 'Javascript',
     description: "A js library",
     owner: "facebook",
     name: "react",
-    html_url: 'https://github.com/facebook/react' 
+    html_url: 'https://github.com/facebook/react'
   }
 
 
@@ -19,18 +19,15 @@ const renderComponent = () => {
       <RepositoriesListItem repository={repository} />
     </MemoryRouter>
   )
+
+  return {repository};
 }
 
 test('shows a link to the github homepage for this repository', async () => {
-  renderComponent()
+  const { repository } = renderComponent()
 
- await screen.findByRole('img', { name: /javascript/i });
-} )
+  await screen.findByRole('img', { name: /javascript/i });
 
-const pause = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve()
-    }, 100)
-  })
-}
+  const link = screen.getByRole('link', { name: /github repository/i});
+  expect(link).toHaveAttribute('href', repository.html_url);
+})
