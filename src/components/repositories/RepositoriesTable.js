@@ -15,7 +15,7 @@ function RepositoriesTable({ label, repositories, id }) {
         </div>
       );
     });
-
+    console.log(repositories);
   return (
     <div className="border p-4 rounded">
       <h1 id={id || ''} className="text-lg font-bold border-b mb-1">
