@@ -7,20 +7,18 @@ import { setupServer } from 'msw/lib/node';
 import HomeRoute from './HomeRoute';
 
 
-const handlers = [
-  rest.get('/api/repositories', (req, res, ctx) => {
+createServer([{
+  path: '/api/repositories',
+  res: (req) => {
     const language = req.url.searchParams.get('q').split('language:')[1]
-
-    return res(
-      ctx.json({
-        items:[
+    return {
+      items: [
           {id: 1, full_name: `${language}_one`},
           {id: 2, full_name: `${language}_two`},
-        ]
-      })
-    )
-  })
-]
+      ]
+    }
+   }
+}])
 
 test('renders two links in the repository table', async () => {
 
@@ -42,8 +40,3 @@ test('renders two links in the repository table', async () => {
   }
 })
 
-const server = setupServer(...handlers)
-
-beforeAll(()=> server.listen())
-afterEach(()=> server.resetHandlers())
-afterAll(()=> server.close())
